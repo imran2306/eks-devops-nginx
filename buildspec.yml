@@ -9,6 +9,7 @@ phases:
         # Docker Image Tag with Date Time & Code Buiild Resolved Source Version
         #- TAG="$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
         # Use the latest Git tag as the image tag
+        - git fetch --tags
         - TAG="$(git describe --tags --abbrev=0)"
         # Update Image tag in our Kubernetes Deployment Manifest        
         - echo "Update Image tag in kube-manifest..."
