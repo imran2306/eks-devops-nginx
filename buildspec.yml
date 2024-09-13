@@ -7,10 +7,10 @@ phases:
       commands:
         #- echo "Building v2.0.0"
         # Docker Image Tag with Date Time & Code Buiild Resolved Source Version
-        #- TAG="$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
+        - TAG="$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
         # Use the latest Git tag as the image tag
-        - git fetch --tags
-        - TAG="$(git describe --tags --abbrev=0)"
+        #- git fetch --tags
+        #- TAG="$(git describe --tags --abbrev=0)"
         # Update Image tag in our Kubernetes Deployment Manifest        
         - echo "Update Image tag in kube-manifest..."
         - sed -i 's@CONTAINER_IMAGE@'"$REPOSITORY_URI:$TAG"'@' kube-manifests/01-DEVOPS-Nginx-Deployment.yml
@@ -53,12 +53,12 @@ phases:
       # Create Artifacts which we can use if we want to continue our pipeline for other stages
       - printf '[{"name":"01-DEVOPS-Nginx-Deployment.yml","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
       # Additional Commands to view your credentials      
-      #- echo "Credentials Value is..  ${CREDENTIALS}"      
-      #- echo "AWS_ACCESS_KEY_ID...  ${AWS_ACCESS_KEY_ID}"            
-      #- echo "AWS_SECRET_ACCESS_KEY...  ${AWS_SECRET_ACCESS_KEY}"            
-      #- echo "AWS_SESSION_TOKEN...  ${AWS_SESSION_TOKEN}"            
-      #- echo "AWS_EXPIRATION...  $AWS_EXPIRATION"             
-      #- echo "EKS_CLUSTER_NAME...  $EKS_CLUSTER_NAME"             
+      - echo "Credentials Value is..  ${CREDENTIALS}"      
+      - echo "AWS_ACCESS_KEY_ID...  ${AWS_ACCESS_KEY_ID}"            
+      - echo "AWS_SECRET_ACCESS_KEY...  ${AWS_SECRET_ACCESS_KEY}"            
+      - echo "AWS_SESSION_TOKEN...  ${AWS_SESSION_TOKEN}"            
+      - echo "AWS_EXPIRATION...  $AWS_EXPIRATION"             
+      - echo "EKS_CLUSTER_NAME...  $EKS_CLUSTER_NAME"             
 artifacts:
   files: 
     - build.json   
